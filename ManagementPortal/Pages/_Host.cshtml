@@ -31,6 +31,11 @@
         <a class="dismiss">🗙</a>
     </div>
 
+    <script type="text/javascript">
+        if (/MSIE \d|Trident.*rv:/.test(navigator.userAgent)) {
+            document.write('<script src="js/blazor.polyfill.min.js"><\/script>');
+        }
+    </script>
     <script src="_framework/blazor.server.js"></script>
 </body>
 </html>
