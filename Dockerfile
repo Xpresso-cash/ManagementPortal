@@ -4,15 +4,15 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
-COPY ["OfferManagement/OfferManagement.csproj", "OfferManagement/"]
+COPY ["ManagementPortal/ManagementPortal.csproj", "ManagementPortal/"]
 COPY . .
-RUN dotnet restore "OfferManagement/OfferManagement.csproj"
+RUN dotnet restore "ManagementPortal/ManagementPortal.csproj"
 
 RUN dotnet build -c Release -o /app
-RUN cp OfferManagement/OfferManagement.pfx /app/
+RUN cp ManagementPortal/ManagementPortal.pfx /app/
 
 FROM build AS publish
-RUN dotnet publish "OfferManagement/OfferManagement.csproj" -c Release -o /app
+RUN dotnet publish "ManagementPortal/ManagementPortal.csproj" -c Release -o /app
 
 FROM base AS final
 WORKDIR /app
@@ -28,4 +28,4 @@ ENV CORECLR_ENABLE_PROFILING=1 \
 CORECLR_PROFILER={36032161-FFC0-4B61-B559-F6C5D41BAE5A} \
 CORECLR_NEWRELIC_HOME=/newrelic-netcore20-agent \
 CORECLR_PROFILER_PATH=//newrelic-netcore20-agent/libNewRelicProfiler.so
-ENTRYPOINT ["dotnet", "OfferManagement.dll"]
+ENTRYPOINT ["dotnet", "ManagementPortal.dll"]

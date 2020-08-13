@@ -2,7 +2,7 @@ version: 0.2
 
 env:
   variables:
-    PROJECT: "dev-offers"
+    PROJECT: "dev-mportal"
   parameter-store:
     NEWRELIC_LICENSE: "/build/nrlicense"
 
