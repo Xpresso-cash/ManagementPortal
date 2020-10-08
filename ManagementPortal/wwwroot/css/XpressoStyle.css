@@ -1,0 +1,9 @@
+﻿.menu-contaier-style {
+    position: fixed;
+    height: auto;
+    width: 200px;
+    background-image: url(../images/MenuBack.png);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    text-align: center;
+}

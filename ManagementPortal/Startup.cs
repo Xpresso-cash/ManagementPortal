@@ -1,16 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
+using ManagementPortal.Data;
+using ManagementPortal.HelperClasses;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using ManagementPortal.Data;
 using Microsoft.Extensions.Logging;
+
 
 namespace ManagementPortal
 {
@@ -32,6 +30,9 @@ namespace ManagementPortal
             services.AddCors();
             services.AddRazorPages();
             services.AddServerSideBlazor();
+            services.AddScoped<XpressoAuth>();
+            services.AddScoped<AuthenticationStateProvider>(provider =>
+            provider.GetRequiredService<XpressoAuth>());
             services.AddSingleton<WeatherForecastService>();
         }
 

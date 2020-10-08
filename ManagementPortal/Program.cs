@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using ManagementPortal.HelperClasses;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -29,10 +30,10 @@ namespace ManagementPortal
                             var config = new ConfigurationBuilder()
                             .AddJsonFile("appsettings.json", optional: false)
                              .Build();
-                            //AWSParamStore objParamStore = new AWSParamStore();
-                            string sslCertificateName = "ManagementPortal.pfx";//objParamStore.GetValueFromParamStore(DataConstants.ParamStoreSSLCertificateName).Result;
-                            string strPortNumber = "443";//objParamStore.GetValueFromParamStore(DataConstants.ParamStoreSSLServicePort).Result;
-                            string strPassword = "Genx123!@#"; //objParamStore.GetValueFromParamStore(DataConstants.ParamStoreSSLCertificatePassword).Result;
+                            AWSParamStore objParamStore = new AWSParamStore();
+                            string sslCertificateName = objParamStore.GetValueFromParamStore(DataConstants.ParamStoreSSLCertificateName).Result;
+                            string strPortNumber = objParamStore.GetValueFromParamStore(DataConstants.ParamStoreSSLServicePort).Result;
+                            string strPassword = objParamStore.GetValueFromParamStore(DataConstants.ParamStoreSSLCertificatePassword).Result;
                             int portNumber = Convert.ToInt32(strPortNumber);
                             options.Listen(IPAddress.Any, portNumber, listenOptions =>
                             {

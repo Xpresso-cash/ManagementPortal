@@ -1,15 +1,145 @@
 ﻿@inherits LayoutComponentBase
+@inject XpressoAuth AuthProviderObject
 
-<div class="sidebar">
-    <NavMenu />
-</div>
+<AuthorizeView>
+    <Authorized>
+        <div class="sidebar" @onclick="BodyClick">
+            <NavMenu />
+        </div>
 
-<div class="main">
-    <div class="top-row px-4">
-        <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
-    </div>
+        <div class="main" @onclick="BodyClick">
+            <div class="top-row px-4" style="height:60px">
 
-    <div class="content px-4">
-        @Body
-    </div>
-</div>
+                <img src="Images/XpressoSplashScreen.png" style="height:50px; width:50px; border-radius:25px; border: 2px solid #898484; cursor: pointer;"
+                     @onclick="ShowMenu" />
+            </div>
+
+            <div class="content px-4">
+                @Body
+            </div>
+        </div>
+
+        @if (isShowMenu)
+        {
+            <div class="menu-contaier-style" style="@menuStyle">
+
+
+                <div style="width: 100%; margin:0; padding:10px 0px 10px 0px;">
+                    Profile
+                </div>
+
+                <hr style="height: 1px; width: 90%; background-color: #E7E6E6; margin: 0px 5% 0px 5%;" />
+
+                <div style="width: 100%; margin:0; padding:10px 0px 10px 0px; cursor: pointer;" @onclick="Logout_Clicked">
+                    Log out
+                </div>
+            </div>
+        }
+    </Authorized>
+    <NotAuthorized>
+        <table style="position:fixed; height: 100%; width: 100%;">
+            <tr>
+                <td style="height: 100%; width: 75%;  background-image: url(../images//XpressoBackground.png); vertical-align: central;">
+                    <table style="height: 60%; width: 100%;">
+                        <tr>
+                            <td style="height: 100%; width:40%; vertical-align: middle; padding: 0px 50px 0px 50px;">
+                                <img src="../Images/LoginImage1.png" style="width:100%; height: auto;" />
+                            </td>
+                            <td style="height: 100%; width:60%; vertical-align: middle; padding: 0px 50px 0px 50px; text-align: center;">
+                                <img src="../Images/XpressoSplashScreen.png" style="width:60%; height: auto;" /><br />
+                                <label style="font-size: 72px; color: white;">Management Portal</label>
+                            </td>
+                        </tr>
+
+                    </table>
+                </td>
+                <td style="height: 100%; width: 25%; vertical-align:middle; text-align:center; padding: 0px 20px 0px 20px">
+                    <table style="width: 85%;">
+                        <tr>
+                            <td style="width: 30%; text-align:left;">
+                                Username:
+                            </td>
+                            <td style=" width: 70%; text-align: left;">
+                                <input style="width:100%;" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="height: 20px;">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 30%; text-align: left;">
+                                Password:
+                            </td>
+                            <td style="width: 70%; text-align: left;">
+                                <input style="width:100%;" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="height: 20px;">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 30%;">
+                            </td>
+                            <td style="text-align:center; width: 70%;">
+                                <button class="btn btn-primary" style="width: 100%;" @onclick="Login_Clicked">Log In</button>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+
+    </NotAuthorized>
+</AuthorizeView>
+
+
+@code
+{
+
+    private string menuStyle { get; set; }
+    private bool isShowMenu { get; set; }
+    private bool isMenuJustOpen { get; set; }
+    private void ShowMenu(MouseEventArgs e)
+    {
+        isShowMenu = !isShowMenu;
+        isMenuJustOpen = isShowMenu;
+
+        if (isShowMenu)
+        {
+            menuStyle = "top:58px; left:" + (e.ScreenX - 200) + "px;";
+        }
+    }
+
+    private void BodyClick(EventArgs e)
+    {
+        if (!isMenuJustOpen)
+            isShowMenu = false;
+        else
+            isMenuJustOpen = false;
+
+
+    }
+
+
+    //[CascadingParameter]
+    //private Task<AuthenticationState> authenticationStateTask { get; set; }
+
+
+    private async void Login_Clicked()
+    {
+
+        await AuthProviderObject.CheckLogin("tanuj@xpresso.cash", "Genx123!@#");
+        
+    }
+
+    private async void Logout_Clicked()
+    {
+
+        await AuthProviderObject.LogoutUser();
+        isShowMenu = false;
+
+    }
+
+}
